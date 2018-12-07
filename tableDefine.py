@@ -11,7 +11,6 @@ Base = declarative_base()
 
 ########################################################################
 class Particulars(Base):
-	""""""
 	__tablename__ = "particulars"
 
 	data_id = Column(Integer, primary_key=True)
@@ -21,12 +20,12 @@ class Particulars(Base):
 	postal_code = Column(Integer, nullable=False)
 	nationality = Column(String, nullable=False)
 	gender = Column(String, nullable=False)
-		
+	chat_id = Column(Integer, nullable=True)
+	
 	
 	#----------------------------------------------------------------------
 	# This is used to query for creating the entries in the table
-	def __init__(self, data_id, national_id, full_name, date_of_birth, postal_code, nationality, gender):
-		""""""
+	def __init__(self, data_id, national_id, full_name, date_of_birth, postal_code, nationality, gender, chat_id):
 		self.data_id = data_id
 		self.national_id =national_id
 		self.full_name = full_name
@@ -34,9 +33,11 @@ class Particulars(Base):
 		self.postal_code = postal_code
 		self.nationality = nationality
 		self.gender = gender
+		self.chat_id = chat_id
 
 class Credentials(Base):
     __tablename__ = "credentials"
+
     user_name = Column(String, nullable=False, primary_key=True)
     password = Column(String,nullable=False)
     particulars_id = Column(Integer, ForeignKey('particulars.data_id'))

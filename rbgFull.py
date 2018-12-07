@@ -75,7 +75,7 @@ session = Session()
 
 # Pump the data into the class
 for i in range(len(data_id)):
-    particulars_data = Particulars(data_id[i], national_id[i], full_name[i], date_of_birth[i], postal_code[i], nationality[i], gender[i])
+    particulars_data = Particulars(data_id[i], national_id[i], full_name[i], date_of_birth[i], postal_code[i], nationality[i], gender[i], None)
     session.add(particulars_data)
     credentials_data = Credentials('user' + str(data_id[i]), '1234', data_id[i])
     session.add(credentials_data)
