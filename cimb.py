@@ -43,12 +43,20 @@ engine = create_engine('sqlite:///data.db', echo = True)
 Session = sessionmaker(bind = engine)
 session = Session()
 cimb_credentials_database = session.query(Credentials).all()
+cimb_particulars_database = session.query(Particulars).all()
 def check_credential(user_name_value, password_value, databases):
     for item in databases:
         if item.user_name == user_name_value:
             if item.password == password_value:
-                return 'Login Successful'
+                return ('Login Successful', item.particulars_id)
     return 'Invalid Username or Password'
+
+def pull_out_name(particulars_id, databases):
+    for item in databases:
+        if particulars_id == item.data_id:
+            return item.full_name
+    return
+
 ######################################################################################
 
 def for_username(bot, update):
@@ -63,7 +71,9 @@ def for_password(bot, update, user_data):
 
 def check(bot, update, user_data):
     user_data['password'] = update.message.text
-    update.message.reply_text(check_credential(user_data['username'], user_data['password'], cimb_credentials_database))
+    name_data = check_credential(user_data['username'], user_data['password'], cimb_credentials_database)
+    update.message.reply_text(name_data[0])
+    update.message.reply_text('Welcome ' + pull_out_name(name_data[1], cimb_particulars_database) + '!')
     return ConversationHandler.END
 
 def scanFrontID(bot, update):
