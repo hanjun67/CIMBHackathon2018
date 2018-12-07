@@ -22,7 +22,6 @@ class Particulars(Base):
 	gender = Column(String, nullable=False)
 	chat_id = Column(Integer, nullable=True)
 	
-	
 	#----------------------------------------------------------------------
 	# This is used to query for creating the entries in the table
 	def __init__(self, data_id, national_id, full_name, date_of_birth, postal_code, nationality, gender, chat_id):
@@ -40,6 +39,7 @@ class Credentials(Base):
 
     user_name = Column(String, nullable=False, primary_key=True)
     password = Column(String,nullable=False)
+    acc_balance = Column(Float, nullable=False, default=0)
     particulars_id = Column(Integer, ForeignKey('particulars.data_id'))
     # Use cascade='delete,all' to propagate the deletion of a credentials onto its particulars
     particulars = relationship(
@@ -50,12 +50,29 @@ class Credentials(Base):
         )
     )
 
-    
     def __init__(self, user_name, password, particulars_id):
         self.user_name = user_name
         self.password = password
         self.particulars_id = particulars_id
         
+class Transactions(Base):
+	__tablename__ = "transactions"
+
+	transaction_id = Column(Integer, primary_key=True)
+	debit_user_name = Column(Integer, ForeignKey('credentials.user_name'), nullable = False)
+	credit_user_name = Column(Integer, ForeignKey('credentials.user_name'), nullable = False)
+	amount = Column(Float, nullable=False)
+	description = Column(String)
+	debit_user = relationship(Credentials, foreign_keys = [debit_user_name])
+	credit_user = relationship(Credentials, foreign_keys = [credit_user_name])
+
+	def __init__(self, transaction_id, debit_user_name, credit_user_name, amount, description):
+		self.transaction_id = transaction_id
+		self.debit_user_name = debit_user_name
+		self.credit_user_name = credit_user_name
+		self.amount = amount
+		self.description = description
+
 
 # create tables
 Base.metadata.create_all(engine)

@@ -80,6 +80,9 @@ for i in range(len(data_id)):
     credentials_data = Credentials('user' + str(data_id[i]), '1234', data_id[i])
     session.add(credentials_data)
     
-
 # commit the record the database
+session.commit()
+
+# Update 1 user with account balance
+session.query(Credentials).filter(Credentials.user_name ==  'user1').update({'acc_balance':10000})
 session.commit()
