@@ -7,7 +7,7 @@ import names
 import datetime as dt
 
 # Predefined variable
-length = 5
+length = 2
 data_id = []
 national_id = []
 date_of_birth = []
